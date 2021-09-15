@@ -9,15 +9,15 @@ function App() {
   const [showSaeedInFolder, setShowSaeedInFolder] = useState(false)
   const [instruments, setInstruments] = useState([])
   const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
-    axios.get(`https://api.social.pabla.ir/api/v1/instruments/`).then(res => {
+    setLoading(true)
+    axios.get(`https://api.social.pabla.ir/api/v1/instruments/?search=${searchQuery}`).then(res => {
       setInstruments(res.data.results)
       setLoading(false)
     })
-
-  }, [])
+  }, [searchQuery])
 
   return (
     <div className="App">
@@ -26,8 +26,20 @@ function App() {
           Saeed and APIs.
         </p>
         <p>____________________________________</p>
-        {loading ? 'Loading...' : null}
-        {instruments.map(instrument => (<div style={{
+        <input 
+          placeholder='Type to Search...'
+          style={{
+            marginBottom: 20,
+            padding: '15px 25px',
+            borderRadius: 20,
+            border: 'none',
+            fontSize: 20,
+          }}
+          onChange={(e) => {
+            setSearchQuery(e.target.value)
+          }}
+        />
+        {!loading ? instruments.map(instrument => (<div style={{
           display: 'flex',
           alignItems: 'center',
           marginBottom: 25
@@ -41,7 +53,7 @@ function App() {
             }}
           />
           {instrument.name}
-        </div>))}
+        </div>)) : <div>Loading...</div>}
         <p>____________________________________</p>
         {showSaeedInFolder && <SaeedInFolder />}
         <button
