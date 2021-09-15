@@ -1,6 +1,11 @@
+import { useEffect } from 'react'
+
 import SaeedWhateverIWant, { NotDefaultSaeed, AnotherNotDefaultSaeed } from '../Saeed'
 
 const SaeedInFolder = (props) => {
+    useEffect(() => {
+        console.log('SaeedInFolder mounted');
+    }, [])
 
     return (<div>
         <SaeedWhateverIWant />
